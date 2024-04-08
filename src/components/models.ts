@@ -1,8 +1,11 @@
-export interface Todo {
+export interface PosterAnime {
     id: number;
-    content: string;
-}
-
-export interface Meta {
-    totalCount: number;
+    slug: string;
+    image: string;
+    name: string;
+    status: string;
+    rpaRating: string;
+    shikimoriId: number;
+    rating: number;
+    mediaType: string;
 }
