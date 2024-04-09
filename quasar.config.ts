@@ -5,7 +5,7 @@
 
 import { configure } from 'quasar/wrappers';
 import { fileURLToPath } from 'node:url';
-
+/* */
 export default configure((ctx) => {
     return {
         // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
@@ -97,7 +97,6 @@ export default configure((ctx) => {
 
         // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
         devServer: {
-            https: true,
             open: true, // opens browser window automatically
         },
 

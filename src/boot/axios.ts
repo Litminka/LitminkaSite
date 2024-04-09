@@ -15,6 +15,9 @@ declare module '@vue/runtime-core' {
 // for each client)
 
 export default boot(({ app, store }) => {
+    if (process.env.DEV) {
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+    }
     const api = axios.create({ baseURL: 'https://api.litminka.ru' });
     // for use inside Vue files (Options API) through this.$axios and this.$api
 
