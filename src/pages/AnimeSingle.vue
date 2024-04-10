@@ -24,7 +24,7 @@
                 <div>{{ escapeText(animeStore.anime.description) }}</div>
             </div>
         </div>
-        <kodik-player :link="animeStore.anime.kodikLink"></kodik-player>
+        <kodik-player :anime="animeStore.anime"></kodik-player>
     </q-page>
 </template>
 
@@ -46,6 +46,7 @@ defineOptions({
         } catch (error) {
             const err = error as AxiosError;
             if (err.response?.status === 404) {
+                //TODO: Rewrite to interceptor
                 redirect('/404');
             }
         }

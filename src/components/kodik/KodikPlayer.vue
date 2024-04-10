@@ -1,26 +1,107 @@
 <template>
     <div class="q-video">
-        <iframe :src="link" frameborder="0" allowfullscreen />
+        <q-select
+            v-model="currentTranslation"
+            :options="options"
+            label="Озвучка"
+        />
+        <div class="row grid-container">
+            <div
+                v-for="i in [
+                    ...Array(currentTranslation.value.currentEpisodes).keys(),
+                ]"
+                :key="i"
+            >
+                <q-btn
+                    size="sm"
+                    :color="currentEpisode === i + 1 ? 'secondary' : 'primary'"
+                    :disable="currentEpisode === i + 1"
+                    @click="changeEpisode(i + 1)"
+                    >{{ i + 1 }}</q-btn
+                >
+            </div>
+        </div>
+
+        <iframe
+            class="fit size"
+            ref="kodik"
+            :src="kodikLink"
+            frameborder="0"
+            allowfullscreen
+        />
     </div>
 </template>
 
 <script setup lang="ts">
-import { defineOptions } from 'vue';
+import { computed, ref, defineOptions, PropType } from 'vue';
+import { Anime } from '../models';
+import { onMounted } from 'vue';
+
 defineOptions({
     name: 'KodikPlayer',
+    mounted() {},
 });
-defineProps({
-    link: {
-        type: String,
+
+const kodik = ref();
+const props = defineProps({
+    anime: {
+        type: Object as PropType<Anime>,
         required: true,
     },
+});
+
+const kodikLink = computed(() => {
+    return `${currentTranslation.value.value.link}?hide_selectors=true&episode=${currentEpisode.value}`;
+});
+
+const translations = computed(() => {
+    return props.anime.animeTranslations.map((translation) => {
+        return {
+            label: translation.group.name,
+            value: translation,
+            description: translation.group.type,
+        };
+    });
+});
+
+const currentTranslation = ref({
+    label: props.anime.animeTranslations[0].group.name,
+    value: props.anime.animeTranslations[0],
+    description: props.anime.animeTranslations[0].group.type,
+});
+const options = translations;
+
+const currentEpisode = ref(1);
+function changeEpisode(episode: number) {
+    currentEpisode.value = episode;
+}
+
+onMounted(() => {
+    // window.addEventListener('message', (message) => {
+    //         if (!message) return;
+    //         if (typeof message.data.key === 'undefined') return;
+    //         if (message.data.key.includes('kodik')) {
+    //             if (message.data.key === 'kodik_player_current_episode') {
+    //                 changeEpisode(message.data.value.episode);
+    //             }
+    //         }
+    //     });
 });
 </script>
 
 <style lang="scss">
 .q-video {
-    aspect-ratio: 16/9;
-    width: 50%;
+    width: 75%;
     margin: 0 auto;
+}
+.size {
+    aspect-ratio: 16/9;
+}
+
+.grid-container {
+    max-height: 400px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(16, 1fr);
 }
 </style>
