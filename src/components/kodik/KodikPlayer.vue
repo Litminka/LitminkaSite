@@ -1,34 +1,27 @@
 <template>
     <div class="q-video">
-        <q-select
-            v-model="currentTranslation"
-            :options="options"
-            label="Озвучка"
-        />
+        <div class="row">
+            <div class="col-3">
+                <q-select
+                    v-model="currentTranslation"
+                    :options="options"
+                    options-dense
+                    label="Озвучка" />
+            </div>
+        </div>
         <div class="row grid-container">
-            <div
-                v-for="i in [
-                    ...Array(currentTranslation.value.currentEpisodes).keys(),
-                ]"
-                :key="i"
-            >
+            <div v-for="i in [...Array(currentTranslation.value.currentEpisodes).keys()]" :key="i">
                 <q-btn
                     size="sm"
                     :color="currentEpisode === i + 1 ? 'secondary' : 'primary'"
                     :disable="currentEpisode === i + 1"
-                    @click="changeEpisode(i + 1)"
-                    >{{ i + 1 }}</q-btn
-                >
+                    @click="changeEpisode(i + 1)">
+                    {{ i + 1 }}
+                </q-btn>
             </div>
         </div>
 
-        <iframe
-            class="fit size"
-            ref="kodik"
-            :src="kodikLink"
-            frameborder="0"
-            allowfullscreen
-        />
+        <iframe class="fit size" ref="kodik" :src="kodikLink" frameborder="0" allowfullscreen />
     </div>
 </template>
 
@@ -36,10 +29,10 @@
 import { computed, ref, defineOptions, PropType } from 'vue';
 import { Anime } from '../models';
 import { onMounted } from 'vue';
+import { onUnmounted } from 'vue';
 
 defineOptions({
     name: 'KodikPlayer',
-    mounted() {},
 });
 
 const kodik = ref();
@@ -76,16 +69,23 @@ function changeEpisode(episode: number) {
     currentEpisode.value = episode;
 }
 
+function kodikListener(message: MessageEvent) {
+    if (!message) return;
+    if (typeof message.data.key === 'undefined') return;
+    if (message.data.key.includes('kodik')) {
+        // todo: fix continue button
+        if (message.data.key === 'kodik_player_current_episode') {
+            changeEpisode(message.data.value.episode);
+        }
+    }
+}
+
 onMounted(() => {
-    // window.addEventListener('message', (message) => {
-    //         if (!message) return;
-    //         if (typeof message.data.key === 'undefined') return;
-    //         if (message.data.key.includes('kodik')) {
-    //             if (message.data.key === 'kodik_player_current_episode') {
-    //                 changeEpisode(message.data.value.episode);
-    //             }
-    //         }
-    //     });
+    window.addEventListener('message', kodikListener);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('message', kodikListener);
 });
 </script>
 

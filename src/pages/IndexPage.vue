@@ -1,10 +1,6 @@
 <template>
     <q-page class="row items-center justify-evenly">
-        <div
-            class="row"
-            v-for="(single, i) in animeStore.anime.seasonal"
-            v-bind:key="i"
-        >
+        <div class="row" v-for="(single, i) in animeStore.anime.seasonal" v-bind:key="i">
             <anime-poster :anime="single"></anime-poster>
         </div>
     </q-page>
@@ -19,7 +15,6 @@ defineOptions({
     async preFetch({ store }) {
         const animeStore = usePosterAnimeStore(store);
         const data = await animeStore.api.get('anime/seasonal');
-        console.log(data.data.data);
         animeStore.anime.seasonal = data.data.data;
     },
 });

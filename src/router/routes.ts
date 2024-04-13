@@ -4,16 +4,12 @@ const routes: RouteRecordRaw[] = [
     {
         path: '/',
         component: () => import('layouts/MainLayout.vue'),
-        children: [
-            { path: '', component: () => import('pages/IndexPage.vue') },
-        ],
+        children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
     },
     {
         path: '/anime/:slug',
         component: () => import('layouts/MainLayout.vue'),
-        children: [
-            { path: '', component: () => import('pages/AnimeSingle.vue') },
-        ],
+        children: [{ path: '', component: () => import('pages/AnimeSingle.vue') }],
     },
 
     // Always leave this as last one,

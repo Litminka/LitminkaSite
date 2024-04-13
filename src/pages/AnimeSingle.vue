@@ -1,27 +1,77 @@
 <template>
     <q-page class="container" padding>
         <div class="row">
-            <div class="col-2">
+            <div class="col-3">
                 <q-img :src="animeStore.anime.image">
-                    <div
-                        class="absolute-bottom text-h1 text-subtitle1 text-center"
-                    >
+                    <div class="absolute-bottom text-h1 text-subtitle1 text-center">
                         кто прочитал тот здохнет🐺
                     </div>
                 </q-img>
-            </div>
-            <div class="col-8">
-                <div class="text-h2">{{ animeStore.anime.name }}</div>
                 <div class="row">
-                    <q-badge
-                        v-for="genre in animeStore.anime.genres"
-                        :key="genre.id"
-                        color="blue"
-                    >
-                        {{ genre.name }}</q-badge
-                    >
+                    <q-rating
+                        v-model="animeStore.anime.shikimoriRating"
+                        size="sm"
+                        :max="10"
+                        color="primary"
+                        readonly
+                        icon="star_border"
+                        icon-selected="star"
+                        icon-half="star_half" />
+                    {{ animeStore.anime.shikimoriRating }}
                 </div>
-                <div>{{ escapeText(animeStore.anime.description) }}</div>
+            </div>
+            <div class="col-9 q-pa-sm">
+                <div class="text-h2">{{ animeStore.anime.name }}</div>
+                <q-separator class="q-my-md" inset />
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col-3">Альтернативные названия</div>
+                        <div class="col-9">
+                            {{ animeStore.anime.englishName }},
+                            {{ animeStore.anime.japaneseName }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">Жанры</div>
+                        <div class="col-9">
+                            <q-badge
+                                v-for="genre in animeStore.anime.genres"
+                                :key="genre.id"
+                                color="blue">
+                                {{ genre.name }}
+                            </q-badge>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">Тип</div>
+                        <div class="row">{{ animeStore.anime.mediaType }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">Количество серий</div>
+                        <div class="col-9">
+                            <div class="row">
+                                {{ animeStore.anime.currentEpisodes }}/{{
+                                    animeStore.anime.maxEpisodes === 0
+                                        ? '?'
+                                        : animeStore.anime.maxEpisodes
+                                }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3">Состояние</div>
+                        <div class="col-9">
+                            {{ animeStore.anime.status }}
+                        </div>
+                    </div>
+                    <q-separator class="q-my-md" inset />
+                    <div class="row">
+                        <div>
+                            <div class="text-h5">Описание</div>
+                            {{ escapeText(animeStore.anime.description) }}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <kodik-player :anime="animeStore.anime"></kodik-player>
@@ -31,25 +81,16 @@
 <script setup lang="ts">
 import { defineOptions } from 'vue';
 import { useAnimeStore } from 'src/stores/AnimeStore';
-import { AxiosError } from 'axios';
 import KodikPlayer from 'src/components/kodik/KodikPlayer.vue';
 
 defineOptions({
     name: 'AnimeSingle',
-    async preFetch({ store, currentRoute, redirect }) {
+    async preFetch({ store, currentRoute }) {
         const animeStore = useAnimeStore(store);
-        try {
-            const response = await animeStore.api.get(
-                `/anime/${currentRoute.params.slug}`,
-            );
-            animeStore.anime = response.data.body;
-        } catch (error) {
-            const err = error as AxiosError;
-            if (err.response?.status === 404) {
-                //TODO: Rewrite to interceptor
-                redirect('/404');
-            }
-        }
+
+        const response = await animeStore.api.get(`/anime/${currentRoute.params.slug}`);
+
+        animeStore.anime = response.data.body;
     },
 });
 
