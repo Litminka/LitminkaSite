@@ -36,9 +36,15 @@ export default boot(({ app, store, ssrContext }) => {
         function (config) {
             const cookies = process.env.SERVER ? Cookies.parseSSR(ssrContext) : Cookies; // otherwise we're on client
             const token = cookies.get('token');
-            console.log(cookies.getAll());
 
             if (!token) return config;
+
+            config.headers.concat({
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': '*',
+                'Access-Control-Allow-Headers': '*',
+            });
 
             if (!config.headers.Authorization) {
                 config.headers.Authorization = `Bearer ${token}`;

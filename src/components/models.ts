@@ -112,3 +112,25 @@ export interface Anime {
     animeTranslations: AnimeTranslation[];
     relations: AnimeRelation[];
 }
+
+export interface User {
+    id: number;
+    email: string;
+    login: string;
+    password: string;
+    name: string;
+    createdAt: string;
+    roleId: number;
+    role: Role;
+}
+
+export interface Role {
+    id: number;
+    name: string;
+    permissions: Permission[];
+}
+
+export interface Permission {
+    id: number;
+    name: string;
+}

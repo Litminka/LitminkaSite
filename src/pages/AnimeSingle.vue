@@ -101,7 +101,6 @@ function escapeText(text: string) {
 }
 
 const animeStore = useAnimeStore();
-console.log(animeStore.anime);
 </script>
 
 <style lang="scss">
