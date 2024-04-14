@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import AnimePoster from 'src/components/anime/AnimePoster.vue';
-import { usePosterAnimeStore } from 'src/stores/PosterAnimeStore';
+import { usePosterAnimeStore } from 'src/stores/poster-anime-store';
 
 defineOptions({
     name: 'IndexPage',
@@ -21,3 +21,4 @@ defineOptions({
 
 const animeStore = usePosterAnimeStore();
 </script>
+src/stores/poster-anime-store

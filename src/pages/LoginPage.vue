@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { useQuasar } from 'quasar';
-import { useUserStore } from 'src/stores/UserStore';
+import { useUserStore } from 'src/stores/user-store';
 import { ref } from 'vue';
 const store = useUserStore();
 
@@ -75,3 +75,4 @@ function reset() {
     password.value = '';
 }
 </script>
+src/stores/user-store

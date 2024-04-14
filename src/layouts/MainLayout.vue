@@ -23,19 +23,19 @@
 <script setup lang="ts">
 import { Cookies, useQuasar } from 'quasar';
 import { User } from 'src/components/models';
-import { useUserStore } from 'src/stores/UserStore';
+import { useUserStore } from 'src/stores/user-store';
 
 defineOptions({
     name: 'MainLayout',
     async preFetch({ store, currentRoute, redirect, ssrContext }) {
         const cookies = Cookies.parseSSR(ssrContext);
         const token = cookies.get('token');
+
         if (!token) {
-            if (currentRoute.meta.auth) {
-                redirect('/login');
-            }
+            if (currentRoute.meta.auth) redirect('/login');
             return;
         }
+
         const userStore = useUserStore(store);
         const response = await userStore.api.get('users/profile');
         userStore.user = response.data.data.user;
@@ -52,3 +52,4 @@ function logout() {
     store.router.go(0);
 }
 </script>
+src/stores/user-store

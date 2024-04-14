@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from 'src/stores/UserStore';
+import { useUserStore } from 'src/stores/user-store';
 
 defineOptions({
     name: 'ProfilePage',
@@ -18,3 +18,4 @@ defineOptions({
 
 const store = useUserStore();
 </script>
+src/stores/user-store

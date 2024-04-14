@@ -80,7 +80,7 @@
 
 <script setup lang="ts">
 import { defineOptions } from 'vue';
-import { useAnimeStore } from 'src/stores/AnimeStore';
+import { useAnimeStore } from 'src/stores/anime-store';
 import KodikPlayer from 'src/components/kodik/KodikPlayer.vue';
 
 defineOptions({
@@ -109,3 +109,4 @@ const animeStore = useAnimeStore();
     margin: 0 auto;
 }
 </style>
+src/stores/anime-store
