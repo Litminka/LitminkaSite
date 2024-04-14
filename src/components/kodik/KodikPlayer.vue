@@ -21,7 +21,13 @@
             </div>
         </div>
 
-        <iframe class="fit size" ref="kodik" :src="kodikLink" frameborder="0" allowfullscreen />
+        <iframe
+            :key="currentTranslation.value.id + currentEpisode"
+            class="fit size"
+            ref="kodik"
+            :src="kodikLink"
+            frameborder="0"
+            allowfullscreen />
     </div>
 </template>
 

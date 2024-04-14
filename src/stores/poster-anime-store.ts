@@ -4,6 +4,8 @@ export const usePosterAnimeStore = defineStore('poster-anime', {
     state: () => ({
         anime: {
             seasonal: [],
+            announced: [],
+            popular: [],
         },
     }),
 

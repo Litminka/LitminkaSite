@@ -1,5 +1,5 @@
 <template>
-    <q-page class="container" padding>
+    <q-page v-if="animeStore.anime.id" class="container" padding>
         <div class="row">
             <div class="col-3">
                 <q-img :src="animeStore.anime.image">
@@ -74,8 +74,12 @@
                 </div>
             </div>
         </div>
-        <kodik-player :anime="animeStore.anime"></kodik-player>
+        <kodik-player
+            v-if="animeStore.anime.animeTranslations.length > 0"
+            :anime="animeStore.anime"></kodik-player>
+        <div v-else>Пока нет возможности смотреть</div>
     </q-page>
+    <div v-else>Loading</div>
 </template>
 
 <script setup lang="ts">

@@ -2,9 +2,9 @@
     <q-layout view="lHh Lpr lFf">
         <q-header elevated>
             <q-toolbar>
-                <q-btn flat dense round icon="menu" aria-label="Menu" />
-
-                <q-toolbar-title>Quasar App</q-toolbar-title>
+                <q-toolbar-title>
+                    <router-link class="brand-logo" :to="{ path: '/' }">Litminka</router-link>
+                </q-toolbar-title>
 
                 <div v-if="store.user.id">
                     <div>Добро пожаловать {{ store.user.name }}:</div>
@@ -28,7 +28,7 @@ import { useUserStore } from 'src/stores/user-store';
 defineOptions({
     name: 'MainLayout',
     async preFetch({ store, currentRoute, redirect, ssrContext }) {
-        const cookies = Cookies.parseSSR(ssrContext);
+        const cookies = process.env.SERVER ? Cookies.parseSSR(ssrContext) : Cookies;
         const token = cookies.get('token');
 
         if (!token) {
@@ -52,4 +52,10 @@ function logout() {
     store.router.go(0);
 }
 </script>
-src/stores/user-store
+
+<style lang="scss">
+.brand-logo {
+    color: white;
+    text-decoration: none;
+}
+</style>
