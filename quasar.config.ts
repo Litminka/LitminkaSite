@@ -5,7 +5,7 @@
 
 import { configure } from 'quasar/wrappers';
 import { fileURLToPath } from 'node:url';
-
+/* */
 export default configure((ctx) => {
     return {
         // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
@@ -73,11 +73,7 @@ export default configure((ctx) => {
                         ssr: ctx.modeName === 'ssr',
 
                         // you need to set i18n resource including paths !
-                        include: [
-                            fileURLToPath(
-                                new URL('./src/i18n', import.meta.url),
-                            ),
-                        ],
+                        include: [fileURLToPath(new URL('./src/i18n', import.meta.url))],
                     },
                 ],
                 [
@@ -97,7 +93,6 @@ export default configure((ctx) => {
 
         // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
         devServer: {
-            https: true,
             open: true, // opens browser window automatically
         },
 
@@ -116,7 +111,7 @@ export default configure((ctx) => {
             // directives: [],
 
             // Quasar plugins
-            plugins: [],
+            plugins: ['Cookies', 'Notify'],
         },
 
         // animations: 'all', // --- includes all animations
