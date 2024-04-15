@@ -55,7 +55,7 @@ async function submit() {
         return;
     }
 
-    const data = response.data.data;
+    const data = response.data.body;
     $q.cookies.set('token', data.token);
     $q.cookies.set('refreshToken', data.refreshToken);
     $q.notify({
@@ -66,7 +66,7 @@ async function submit() {
     });
 
     const res = await userStore.api.get('users/profile');
-    userStore.user = res.data.data.user;
+    userStore.user = res.data.body.user;
     store.router.push('/');
 }
 

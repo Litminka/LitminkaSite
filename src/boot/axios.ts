@@ -3,6 +3,7 @@ import axios, { AxiosError, AxiosInstance } from 'axios';
 import { Cookies } from 'quasar';
 import NotFoundError from 'src/errors/NotFoundError';
 import LoginError from 'src/errors/LoginError';
+import { useUserStore } from 'src/stores/user-store';
 declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {
         $axios: AxiosInstance;
@@ -17,8 +18,15 @@ declare module '@vue/runtime-core' {
 // "export default () => {}" function below (which runs individually
 // for each client)
 
-interface ForbiddenError {
-    message: string;
+enum UnauthorizedTypes {
+    Unauthorized = 'unauthorized',
+    NotProvided = 'not_provided',
+    Expired = 'expired',
+    RefreshExpired = 'refresh_expired',
+}
+
+interface UnauthorizedError {
+    message: UnauthorizedTypes;
 }
 
 interface RefreshResponse {
@@ -26,7 +34,7 @@ interface RefreshResponse {
     refreshToken: string;
 }
 
-export default boot(({ app, store, ssrContext }) => {
+export default boot(({ store, ssrContext }) => {
     if (process.env.DEV) {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     }
@@ -60,76 +68,53 @@ export default boot(({ app, store, ssrContext }) => {
 
     api.interceptors.response.use(
         function (response) {
-            // Any status code that lie within the range of 2xx cause this function to trigger
-            // Do something with response data
             return response;
         },
         async function (error: AxiosError) {
-            const cookies = process.env.SERVER ? Cookies.parseSSR(ssrContext) : Cookies; // otherwise we're on client
+            const cookies = process.env.SERVER ? Cookies.parseSSR(ssrContext) : Cookies;
 
+            const response = error.response;
             const status = error.response?.status;
             const config = error.response?.config;
 
-            if (status === 422) return error.response;
+            if (status === 422) return response;
 
-            if (status === 404) throw new NotFoundError();
+            if (status === 403 || status === 404) throw new NotFoundError();
 
             if (status === 401) {
+                const userStore = useUserStore(store);
                 const refresh = cookies.get('refreshToken');
-
-                if (!refresh) {
-                    cookies.remove('token');
+                // if 401 and token anything but expired, end the session
+                if (
+                    response === undefined ||
+                    (<UnauthorizedError>response.data).message !== UnauthorizedTypes.Expired ||
+                    !refresh
+                ) {
+                    userStore.signOut(cookies);
                     throw new LoginError();
                 }
 
-                const response = await api.get('token/refresh', {
+                const res = await api.get('token/refresh', {
                     headers: {
                         Authorization: `Bearer ${refresh}`,
                     },
                 });
 
-                const { token, refreshToken }: RefreshResponse = response.data.data;
+                const { token, refreshToken }: RefreshResponse = res.data.body;
+
                 cookies.set('token', token);
-                cookies.set('token', refreshToken);
+                cookies.set('refreshToken', refreshToken);
+
+                // retry original request
                 if (config !== undefined) {
                     config.headers.Authorization = token;
                     return api.request(config);
                 }
             }
 
-            if (status === 403) {
-                const errorResponse = error.response;
-
-                if (
-                    errorResponse &&
-                    (<ForbiddenError>errorResponse.data).message == 'no_permissions'
-                ) {
-                    throw new NotFoundError();
-                }
-
-                cookies.remove('token');
-                cookies.remove('refreshToken');
-
-                if (config !== undefined) {
-                    config.headers.Authorization = undefined;
-                    return api.request(config);
-                }
-
-                throw new LoginError();
-            }
-
             return Promise.reject(error);
         },
     );
 
-    // for use inside Vue files (Options API) through this.$axios and this.$api
-
-    app.config.globalProperties.$axios = axios;
-    // ^ ^ ^ this will allow you to use this.$axios (for Vue Options API form)
-    //       so you won't necessarily have to import axios in each vue file
-
-    app.config.globalProperties.$api = api;
-    // ^ ^ ^ this will allow you to use this.$api (for Vue Options API form)
-    //       so you can easily perform requests against your app's API
-    store.use(() => ({ api }));
+    store.use(() => ({ api, axios }));
 });

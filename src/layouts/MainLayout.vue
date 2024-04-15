@@ -5,7 +5,6 @@
                 <q-toolbar-title>
                     <router-link class="brand-logo" :to="{ path: '/' }">Litminka</router-link>
                 </q-toolbar-title>
-
                 <div v-if="store.user.id">
                     <div>Добро пожаловать {{ store.user.name }}:</div>
                     <q-btn @click="logout">Выйти</q-btn>
@@ -37,8 +36,11 @@ defineOptions({
         }
 
         const userStore = useUserStore(store);
-        const response = await userStore.api.get('users/profile');
-        userStore.user = response.data.data.user;
+
+        if (!userStore.user.id) {
+            const response = await userStore.api.get('users/profile');
+            userStore.user = response.data.body.user;
+        }
     },
 });
 

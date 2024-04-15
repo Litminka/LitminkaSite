@@ -20,9 +20,9 @@ defineOptions({
         const popularResponse = await animeStore.api.get('anime/seasonal/popular');
         const seasonResponse = await animeStore.api.get('anime/seasonal');
         const announcedResponse = await animeStore.api.get('anime/seasonal/announced');
-        animeStore.anime.popular = popularResponse.data.data;
-        animeStore.anime.seasonal = seasonResponse.data.data;
-        animeStore.anime.announced = announcedResponse.data.data;
+        animeStore.anime.popular = popularResponse.data.body;
+        animeStore.anime.seasonal = seasonResponse.data.body;
+        animeStore.anime.announced = announcedResponse.data.body;
     },
 });
 

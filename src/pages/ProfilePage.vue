@@ -18,4 +18,3 @@ defineOptions({
 
 const store = useUserStore();
 </script>
-src/stores/user-store

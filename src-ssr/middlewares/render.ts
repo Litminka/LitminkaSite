@@ -21,11 +21,11 @@ export default ssrMiddleware(({ app, resolve, render, serve }) => {
             .catch((err: RenderError) => {
                 if (err instanceof BaseError) {
                     if (err instanceof LoginError) {
-                        return res.redirect(err.code, err.url);
+                        return res.redirect(err.redirect);
                     }
 
                     if (err instanceof NotFoundError) {
-                        return res.redirect(err.url);
+                        return res.redirect(301, err.redirect);
                     }
                 }
 
