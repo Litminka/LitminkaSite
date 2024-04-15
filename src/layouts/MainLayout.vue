@@ -21,7 +21,6 @@
 
 <script setup lang="ts">
 import { Cookies, useQuasar } from 'quasar';
-import { User } from 'src/components/models';
 import { useUserStore } from 'src/stores/user-store';
 
 defineOptions({
@@ -39,7 +38,7 @@ defineOptions({
 
         if (!userStore.user.id) {
             const response = await userStore.api.get('users/profile');
-            userStore.user = response.data.body.user;
+            userStore.user = response.data.body;
         }
     },
 });
@@ -50,7 +49,7 @@ const $q = useQuasar();
 function logout() {
     $q.cookies.remove('token');
     $q.cookies.remove('refreshToken');
-    store.user = {} as User;
+    store.$reset();
     store.router.go(0);
 }
 </script>

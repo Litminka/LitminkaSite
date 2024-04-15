@@ -1,8 +1,6 @@
 import { boot } from 'quasar/wrappers';
 import axios, { AxiosError, AxiosInstance } from 'axios';
 import { Cookies } from 'quasar';
-import NotFoundError from 'src/errors/NotFoundError';
-import LoginError from 'src/errors/LoginError';
 import { useUserStore } from 'src/stores/user-store';
 declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {
@@ -34,7 +32,7 @@ interface RefreshResponse {
     refreshToken: string;
 }
 
-export default boot(({ store, ssrContext }) => {
+export default boot(({ store, ssrContext, redirect }) => {
     if (process.env.DEV) {
         process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     }
@@ -79,7 +77,7 @@ export default boot(({ store, ssrContext }) => {
 
             if (status === 422) return response;
 
-            if (status === 403 || status === 404) throw new NotFoundError();
+            if (status === 403 || status === 404) redirect('/404');
 
             if (status === 401) {
                 const userStore = useUserStore(store);
@@ -91,7 +89,7 @@ export default boot(({ store, ssrContext }) => {
                     !refresh
                 ) {
                     userStore.signOut(cookies);
-                    throw new LoginError();
+                    redirect('/login');
                 }
 
                 const res = await api.get('token/refresh', {

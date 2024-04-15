@@ -44,7 +44,6 @@ async function submit() {
         login: login.value,
         password: password.value,
     });
-    console.log($q);
     if (response.status === 422) {
         $q.notify({
             color: 'negative',
@@ -66,7 +65,7 @@ async function submit() {
     });
 
     const res = await userStore.api.get('users/profile');
-    userStore.user = res.data.body.user;
+    userStore.user = res.data.body;
     store.router.push('/');
 }
 
@@ -75,4 +74,3 @@ function reset() {
     password.value = '';
 }
 </script>
-src/stores/user-store

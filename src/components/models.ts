@@ -60,6 +60,8 @@ export interface MediaTypes {}
 export interface Genre {
     id: number;
     name: string;
+    nameRussian: string;
+    kind: string;
 }
 
 export interface TranslationGroup {

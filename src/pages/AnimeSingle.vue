@@ -38,7 +38,7 @@
                                 v-for="genre in animeStore.anime.genres"
                                 :key="genre.id"
                                 color="blue">
-                                {{ genre.name }}
+                                {{ genre.nameRussian }}
                             </q-badge>
                         </div>
                     </div>
@@ -113,4 +113,3 @@ const animeStore = useAnimeStore();
     margin: 0 auto;
 }
 </style>
-src/stores/anime-store
