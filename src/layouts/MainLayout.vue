@@ -5,6 +5,10 @@
                 <q-toolbar-title>
                     <router-link class="brand-logo" :to="{ path: '/' }">Litminka</router-link>
                 </q-toolbar-title>
+                <q-separator vertical inset />
+
+                <q-btn to="/anime/top100" stretch flat label="Топ 100" />
+                <q-separator vertical inset />
                 <div v-if="store.user.id">
                     <div>Добро пожаловать {{ store.user.name }}:</div>
                     <q-btn @click="logout">Выйти</q-btn>

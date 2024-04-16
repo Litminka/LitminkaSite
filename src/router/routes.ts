@@ -7,6 +7,11 @@ const routes: RouteRecordRaw[] = [
         children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
     },
     {
+        path: '/anime/top100',
+        component: () => import('layouts/MainLayout.vue'),
+        children: [{ path: '', component: () => import('src/pages/Top100.vue') }],
+    },
+    {
         path: '/anime/:slug',
         component: () => import('layouts/MainLayout.vue'),
         children: [{ path: '', component: () => import('pages/AnimeSingle.vue') }],

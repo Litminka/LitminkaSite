@@ -1,7 +1,7 @@
 <template>
     <q-img :src="anime.image" style="height: 100%" :ratio="9 / 16" width="400px" fit="cover">
         <div class="absolute-bottom text-subtitle1 text-center">
-            <router-link class="link" :to="{ path: `anime/${anime.slug}` }">
+            <router-link class="link" :to="{ path: `/anime/${anime.slug}` }">
                 {{ anime.name }}
             </router-link>
         </div>

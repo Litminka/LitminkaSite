@@ -16,13 +16,8 @@ import { usePosterAnimeStore } from 'src/stores/poster-anime-store';
 defineOptions({
     name: 'IndexPage',
     async preFetch({ store }) {
-        const animeStore = usePosterAnimeStore(store);
-        const popularResponse = await animeStore.api.get('anime/seasonal/popular');
-        const seasonResponse = await animeStore.api.get('anime/seasonal');
-        const announcedResponse = await animeStore.api.get('anime/seasonal/announced');
-        animeStore.anime.popular = popularResponse.data.body;
-        animeStore.anime.seasonal = seasonResponse.data.body;
-        animeStore.anime.announced = announcedResponse.data.body;
+        const $store = usePosterAnimeStore(store);
+        await Promise.all([$store.getAnnounced(), $store.getPopular(), $store.getSeasonal()]);
     },
 });
 
