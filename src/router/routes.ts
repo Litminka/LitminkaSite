@@ -12,6 +12,11 @@ const routes: RouteRecordRaw[] = [
         children: [{ path: '', component: () => import('src/pages/Top100.vue') }],
     },
     {
+        path: '/anime/search',
+        component: () => import('layouts/MainLayout.vue'),
+        children: [{ path: '', component: () => import('src/pages/SearchPage.vue') }],
+    },
+    {
         path: '/anime/:slug',
         component: () => import('layouts/MainLayout.vue'),
         children: [{ path: '', component: () => import('pages/AnimeSingle.vue') }],

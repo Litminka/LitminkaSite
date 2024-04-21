@@ -7,6 +7,9 @@
                 </q-toolbar-title>
                 <q-separator vertical inset />
 
+                <q-btn to="/anime/search" stretch flat label="Поиск" />
+                <q-separator vertical inset />
+
                 <q-btn to="/anime/top100" stretch flat label="Топ 100" />
                 <q-separator vertical inset />
                 <div v-if="store.user.id">

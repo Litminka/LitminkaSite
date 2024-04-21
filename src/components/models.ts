@@ -19,6 +19,13 @@ export enum AnimePgaRatings {
     RX = 'rx',
 }
 
+export enum Seasons {
+    winter = 'winter',
+    spring = 'spring',
+    summer = 'summer',
+    autumn = 'autumn',
+}
+
 export enum AnimeMediaTypes {
     TV = 'tv',
     TV_special = 'tv_special',
@@ -135,4 +142,17 @@ export interface Role {
 export interface Permission {
     id: number;
     name: string;
+}
+
+export interface SearchQuery {
+    name?: string;
+    seasons?: string[];
+    statuses?: AnimeStatuses[];
+    rpaRatings?: AnimePgaRatings[];
+    mediaTypes?: AnimeMediaTypes[];
+    includeGenres?: number[];
+    excludeGenres?: number[];
+    period?: string[];
+    page: number;
+    pageLimit: number;
 }

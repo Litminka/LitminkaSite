@@ -29,6 +29,11 @@
 import { PropType, computed, ref } from 'vue';
 import AnimePoster from 'src/components/anime/AnimePoster.vue';
 import { PosterAnime } from './models';
+
+defineOptions({
+    name: 'CustomCarousel',
+});
+
 const props = defineProps({
     itemsPerPage: {
         type: Number,
@@ -38,10 +43,6 @@ const props = defineProps({
         type: Array as PropType<PosterAnime[]>,
         required: true,
     },
-});
-
-defineOptions({
-    name: 'CustomCarousel',
 });
 
 const slide = ref(1);

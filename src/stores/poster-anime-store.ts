@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { PosterAnime } from 'src/components/models';
+import { PosterAnime, SearchQuery } from 'src/components/models';
 
 export const usePosterAnimeStore = defineStore('poster-anime', {
     state: () => ({
@@ -8,6 +8,7 @@ export const usePosterAnimeStore = defineStore('poster-anime', {
             announced: [] as PosterAnime[],
             popular: [] as PosterAnime[],
             top100: [] as PosterAnime[],
+            search: [] as PosterAnime[],
         },
     }),
 
@@ -29,6 +30,39 @@ export const usePosterAnimeStore = defineStore('poster-anime', {
         async getTop100() {
             const response = await this.api.get('anime/top');
             this.anime.top100 = response.data.body;
+        },
+        async search(query: SearchQuery) {
+            const params = new URLSearchParams();
+            params.set('page', (query.page ?? 1).toString());
+            params.set('pageLimit', (query.pageLimit ?? 100).toString());
+
+            const anime = await this.api.post(`anime?${params.toString()}`, {
+                name: query.name ? query.name : undefined,
+                seasons: query.seasons,
+                statuses: query.statuses,
+                rpaRatings: query.rpaRatings,
+                mediaTypes: query.mediaTypes,
+                includeGenres: this.toArray(query.includeGenres),
+                excludeGenres: this.toArray(query.excludeGenres),
+                period: query.period,
+                withCensored: false,
+            });
+            this.anime.search = anime.data.body;
+        },
+        toArray(input?: number | number[]) {
+            let result = undefined;
+            let arg = input;
+            if (typeof arg === 'string') {
+                arg = [Number(arg)];
+            }
+
+            if (typeof arg === 'number') {
+                arg = [arg];
+            }
+            if (arg && arg.length > 0) {
+                result = arg.map((val) => Number(val));
+            }
+            return result;
         },
     },
 });
