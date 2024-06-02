@@ -6,7 +6,11 @@ export const useUserStore = defineStore('user', {
     state: () => ({
         user: {} as User,
     }),
-    getters: {},
+    getters: {
+        isAuth(): boolean {
+            return this.user.id !== undefined;
+        },
+    },
     actions: {
         signOut(cookies: Cookies) {
             cookies.remove('token');

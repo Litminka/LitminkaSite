@@ -27,12 +27,12 @@ export enum Seasons {
 }
 
 export enum AnimeMediaTypes {
-    TV = 'tv',
-    TV_special = 'tv_special',
-    Special = 'special',
-    ONA = 'ona',
-    OVA = 'ova',
-    Movie = 'movie',
+    tv = 'tv',
+    tv_special = 'tv_special',
+    special = 'special',
+    ona = 'ona',
+    ova = 'ova',
+    movie = 'movie',
 }
 
 export enum NotifyStatuses {
@@ -61,8 +61,6 @@ export interface PosterAnime {
     rating: number;
     mediaType: string;
 }
-
-export interface MediaTypes {}
 
 export interface Genre {
     id: number;
@@ -120,6 +118,34 @@ export interface Anime {
     genres: Genre[];
     animeTranslations: AnimeTranslation[];
     relations: AnimeRelation[];
+    follows?: Follow[];
+    animeLists?: WatchList[];
+}
+
+export interface ShortAnime {
+    id: number;
+    image: string;
+    name: string;
+    description: string;
+    status: string;
+    slug: string;
+    currentEpisodes: number;
+    englishName: string;
+    firstEpisodeAired: string;
+    franchiseName: string;
+    japaneseName: string;
+    kodikLink: string;
+    lastEpisodeAired: string;
+    maxEpisodes: number;
+    mediaType: AnimeMediaTypes;
+    rpaRating: AnimePgaRatings;
+    shikimoriId: number;
+    shikimoriRating: number;
+    banned: boolean;
+    censored: boolean;
+    hasRelation: boolean;
+    rating: number;
+    season: string;
 }
 
 export interface User {
@@ -155,4 +181,26 @@ export interface SearchQuery {
     period?: string[];
     page: number;
     pageLimit: number;
+}
+
+export interface Follow {
+    id: number;
+    status: FollowTypes;
+    animeId: number;
+    translationId: number;
+    userId: number;
+}
+export interface WatchList {
+    id: number;
+    animeId: number;
+    userId: number;
+    status: AnimeListStatuses;
+    isFavorite: boolean;
+    watchedEpisodes: number;
+    rating: number;
+    shikimoriId?: number;
+}
+
+export interface WatchListWithAnime extends WatchList {
+    anime: ShortAnime;
 }

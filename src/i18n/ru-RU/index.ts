@@ -23,16 +23,25 @@ export default {
     },
 
     mediaTypes: {
-        TV: 'Аниме',
-        TV_special: 'Аниме Спешл',
-        Special: 'Спешл',
-        ONA: 'Она',
-        OVA: 'Ова',
-        Movie: 'Фильм',
+        tv: 'Аниме',
+        tv_special: 'Аниме Спешл',
+        special: 'Спешл',
+        ona: 'Она',
+        ova: 'Ова',
+        movie: 'Фильм',
     },
     statuses: {
         Announced: 'Анонсирован',
         Released: 'Вышел',
         Ongoing: 'Выходит',
+    },
+
+    animeListStatuses: {
+        planned: 'Запланировано',
+        watching: 'Смотрю',
+        rewatching: 'Пересматриваю',
+        completed: 'Посмотрено',
+        on_hold: 'На удержании',
+        dropped: 'Дропнуто',
     },
 };

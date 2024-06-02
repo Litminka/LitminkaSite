@@ -4,7 +4,7 @@
             <div>{{ store.user.login }}</div>
             <div>{{ store.user.email }}</div>
             <div>{{ store.user.id }}</div>
-            <div>Роль: {{ store.user.role.name }}</div>
+            <!-- <div>Роль: {{ store.user.role.name }}</div> -->
         </div>
     </q-page>
 </template>

@@ -17,6 +17,14 @@ const routes: RouteRecordRaw[] = [
         children: [{ path: '', component: () => import('src/pages/SearchPage.vue') }],
     },
     {
+        path: '/anime/watch-list',
+        component: () => import('layouts/MainLayout.vue'),
+        children: [{ path: '', component: () => import('src/pages/WatchList.vue') }],
+        meta: {
+            auth: true,
+        },
+    },
+    {
         path: '/anime/:slug',
         component: () => import('layouts/MainLayout.vue'),
         children: [{ path: '', component: () => import('pages/AnimeSingle.vue') }],

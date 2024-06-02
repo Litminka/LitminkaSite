@@ -5,16 +5,26 @@
                 <q-toolbar-title>
                     <router-link class="brand-logo" :to="{ path: '/' }">Litminka</router-link>
                 </q-toolbar-title>
-                <q-separator vertical inset />
+                <div class="flex">
+                    <q-separator vertical inset />
 
-                <q-btn to="/anime/search" stretch flat label="Поиск" />
-                <q-separator vertical inset />
+                    <q-btn to="/anime/search" stretch flat label="Поиск" />
+                    <q-separator vertical inset />
 
-                <q-btn to="/anime/top100" stretch flat label="Топ 100" />
-                <q-separator vertical inset />
-                <div v-if="store.user.id">
-                    <div>Добро пожаловать {{ store.user.name }}:</div>
-                    <q-btn @click="logout">Выйти</q-btn>
+                    <q-btn to="/anime/top100" stretch flat label="Топ 100" />
+                    <q-separator vertical inset />
+
+                    <div class="flex" v-if="store.isAuth">
+                        <q-btn to="/anime/watch-list" stretch flat label="Список" />
+                        <q-separator vertical inset />
+                        <q-btn to="/profile" flat stretch>Профиль: {{ store.user.name }}</q-btn>
+                        <q-separator vertical inset />
+                        <q-btn flat stretch @click="logout">Выйти</q-btn>
+                    </div>
+                    <div v-else>
+                        <q-btn to="/login" stretch flat label="Войти" />
+                        <q-separator vertical inset />
+                    </div>
                 </div>
                 <div>Quasar v{{ $q.version }}</div>
             </q-toolbar>
